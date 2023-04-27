@@ -2,7 +2,7 @@ import Login from "../components/Login";
 import { useState } from "react";
 import SignUp from "../components/SignUp";
 
-const Sign = () => {
+const Sign = (props) => {
     const [ isSignIn, setSignIn ] = useState(true);
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
@@ -19,7 +19,7 @@ const Sign = () => {
         </button>
       </div>
       {
-        isSignIn ? <Login /> : <SignUp />
+        isSignIn ? <Login setToken={props.setToken}/> : <SignUp setSignIn={setSignIn}/>
       }
     </div>
   );

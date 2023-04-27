@@ -1,6 +1,6 @@
 const Dashboard = () => {
     return ( 
-        <p>Dashboard</p>
+        <p className="text-9xl">Dashboard</p>
     );
 }
 

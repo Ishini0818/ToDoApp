@@ -1,4 +1,26 @@
-const SignUp = () => {
+import { useState } from "react";
+
+async function regUser(details) {
+    return fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(details)
+    }).then(data => data.json());
+}
+
+const SignUp = (props) => {
+    const [ name, setName ] = useState();
+    const [ age, setAge ] = useState();
+    const [ email, setEmail ] = useState();
+    const [ password, setPassword ] = useState();
+
+    const handleClick = async() => {
+        const { token } = await regUser({name, age, email, password});
+        props.setSignIn(true);
+    }
+
   return (
     <div className="flex md:w-1/2 justify-center py-10 items-center bg-white mb-24 mt-10">
         <div className="flex flex-row gap-12 items-center border border-black py-10 px-14 rounded-lg shadow-md">
@@ -22,6 +44,8 @@ const SignUp = () => {
             type="text"
             name=""
             id=""
+            value={name}
+            onChange={e => setName(e.target.value)}
             placeholder="Full name"
           />
         </div>
@@ -42,10 +66,12 @@ const SignUp = () => {
           </svg>
           <input
             className="pl-2 outline-none border-none"
-            type="text"
+            type="number"
             name=""
             id=""
-            placeholder="Username"
+            value={age}
+            onChange={e => setAge(e.target.value)}
+            placeholder="Age"
           />
         </div>
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -65,8 +91,10 @@ const SignUp = () => {
           </svg>
           <input
             className="pl-2 outline-none border-none"
-            type="text"
+            type="email"
             name=""
+            value={email}
+            onChange={e => setEmail(e.target.value)}
             id=""
             placeholder="Email Address"
           />
@@ -86,17 +114,20 @@ const SignUp = () => {
           </svg>
           <input
             className="pl-2 outline-none border-none"
-            type="text"
+            type="password"
             name=""
             id=""
+            value={password}
+            onChange={e => setPassword(e.target.value)}
             placeholder="Password"
           />
         </div>
         <button
           type="submit"
           className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+          onClick={handleClick}
         >
-          Login
+          Register
         </button>
         <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
           Forgot Password ?
