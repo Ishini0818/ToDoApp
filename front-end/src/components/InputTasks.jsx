@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const InputTasks = (props) => {
   const [task, setTask] = useState("");
 
-  const handleClick = () => {
+  useEffect(() => {
+    if (props.updateItem) {
+      setTask(props.updateItem.description);
+    }
+  }, [props.updateItem]);
+
+  const handleInsert = () => {
     fetch(`http://localhost:5000/tasks`, {
       method: "POST",
       body: JSON.stringify({
@@ -16,8 +22,34 @@ const InputTasks = (props) => {
       },
     })
       .then((res) => res.json())
-      .then((data) => props.setTasks(prev => [ ...prev, data]));
+      .then((data) => props.setTasks((prev) => [...prev, data]));
+  };
 
+  const handlePatch = (tasks, index) => {
+    fetch(`http://localhost:5000/tasks/${tasks[index]._id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        description: tasks[index].description,
+        complited: tasks[index].complited,
+      }),
+    }).then(() => console.log("Successfully Updated."));
+  };
+
+  const handleClick = () => {
+    if (props.updateItem) {
+      const tasks = props.tasks;
+      const index = tasks.findIndex(
+        (task) => task._id === props.updateItem._id
+      );
+      tasks[index].description = task;
+      handlePatch(tasks, index);
+      props.setTasks([...tasks]);
+      props.setUpdateItem();
+    } else handleInsert();
     setTask("");
   };
 
@@ -33,7 +65,7 @@ const InputTasks = (props) => {
         className="px-5 py-2 bg-blue-500 text-white font-semibold capitalize hover:bg-blue-700 shadow-md rounded-md"
         onClick={handleClick}
       >
-        Add
+        {!props.updateItem ? "Add" : "Update"}
       </button>
     </div>
   );

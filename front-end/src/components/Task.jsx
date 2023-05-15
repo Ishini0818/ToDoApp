@@ -21,11 +21,7 @@ const Task = (props) => {
         return "h-auto w-full bg-teal-200 rounded-md text-gray-800 font-semibold flex flex-row justify-between items-center px-5 py-2 hover:bg-teal-300 shadow-sm";
     }
 
-    const handleDone = () => {
-        let tasks = props.tasks;
-        const index = tasks.findIndex(item => item._id === props.task._id);
-        tasks[index].complited = !tasks[index].complited;
-
+    const handlePatch = (tasks, index) =>{
         fetch(`http://localhost:5000/tasks/${tasks[index]._id}`, {
         method: "PATCH",
         headers: {
@@ -39,14 +35,26 @@ const Task = (props) => {
         })
         .then(() => console.log("Successfully Updated."))
 
-        props.setTasks([ ...tasks ]);
+    }
 
+    const handleDone = () => {
+        let tasks = props.tasks;
+        const index = tasks.findIndex(item => item._id === props.task._id);
+        tasks[index].complited = !tasks[index].complited;
+
+        handlePatch(tasks, index);
+        props.setTasks([ ...tasks ]);
+    }
+
+    const handleEdit = () => {
+        props.setUpdateItem(props.task);
     }
 
     return ( 
         <div className={getClasses()}>
             <p>{props.task.description}</p>
             <div className="flex flex-row gap-5 items-center">
+                <button onClick={handleEdit}>🖋️</button>
                 <button onClick={handleDone}>{props.task.complited ? "🔁" :"✔️"}</button>
                 <button onClick={handleDelete}>❌</button>
             </div>
