@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import { useState } from "react";
 
 function App() {
-  const [ token, setToken ] = useState("skk");
+  const [ token, setToken ] = useState();
 
   return (
     <div>

@@ -12,13 +12,14 @@ async function loginUser(credentials) {
 }
 
 const Login = (props) => {
-    const [ email, setEmail ] = useState();
-    const [ password, setPassword ] = useState();
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
 
     const handleSubmit = async() => {
-        const { token } = await loginUser({email, password});
+        const { token, user } = await loginUser({email, password});
         props.setToken(token);
-        console.log(token);
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
   return (
@@ -48,8 +49,8 @@ const Login = (props) => {
           />
         </div>
 
-        <div class="mb-6 flex items-center justify-between">
-          <div class="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
+        <div className="mb-6 flex items-center justify-between">
+          <div className="mb-[0.125rem] block min-h-[1.5rem] pl-[1.5rem]">
             <input
               className="h-5 w-5 mr-3"
               type="checkbox"
@@ -58,7 +59,7 @@ const Login = (props) => {
             />
             <label
               className="inline-block pl-[0.15rem] hover:cursor-pointer"
-              for="exampleCheck2"
+              htmlFor="exampleCheck2"
             >
               Remember me
             </label>

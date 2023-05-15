@@ -11,10 +11,10 @@ async function regUser(details) {
 }
 
 const SignUp = (props) => {
-    const [ name, setName ] = useState();
-    const [ age, setAge ] = useState();
-    const [ email, setEmail ] = useState();
-    const [ password, setPassword ] = useState();
+    const [ name, setName ] = useState("");
+    const [ age, setAge ] = useState("");
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
 
     const handleClick = async() => {
         const { token } = await regUser({name, age, email, password});
@@ -29,7 +29,7 @@ const SignUp = (props) => {
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-400"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -52,7 +52,7 @@ const SignUp = (props) => {
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -77,7 +77,7 @@ const SignUp = (props) => {
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -102,7 +102,7 @@ const SignUp = (props) => {
         <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-gray-400"
+            className="h-5 w-5 text-gray-400"
             viewBox="0 0 20 20"
             fill="currentColor"
           >

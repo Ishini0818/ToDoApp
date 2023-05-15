@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const InputTasks = (props) => {
-    const [ task, setTask ] = useState();
+    const [ task, setTask ] = useState("");
 
     const handleClick = () => {
         props.setTasks(prev => [ ...prev, task ]);
