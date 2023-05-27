@@ -8,8 +8,8 @@ const Login = (props) => {
 
   const handleSubmit = async () => {
     const { data } = await userService.login({ email, password });
-    props.setToken(data.token);
     authService.setToken(data.token);
+    window.location.href = "/";
   };
 
   return (
