@@ -18,7 +18,11 @@ const getUser = () => {
 };
 
 const logoutUser = () => {
-  return httpService.post("http://localhost:5000/users/logout", { headers });
+  return httpService.post(
+    "http://localhost:5000/users/logout",
+    {},
+    { headers }
+  );
 };
 
 export default { login, register, getUser, logoutUser };

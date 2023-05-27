@@ -9,7 +9,7 @@ const setToken = (token) => {
 };
 
 const deleteToken = () => {
-  localStorage.deleteToken(tokenKey);
+  localStorage.removeItem(tokenKey);
 };
 
 export default { getToken, setToken, deleteToken };
