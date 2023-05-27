@@ -1,15 +1,18 @@
 import Sign from "./pages/Sign";
 import Dashboard from "./pages/Dashboard";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [ token, setToken ] = useState();
+  const [token, setToken] = useState();
 
   return (
     <div>
-      {!token? <Sign setToken={setToken} /> : <Dashboard />}
+      <ToastContainer />
+      {!token ? <Sign setToken={setToken} /> : <Dashboard />}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

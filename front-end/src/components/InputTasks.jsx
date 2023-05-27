@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { insertTask, updateTask } from "../services/taskService";
+import { toast } from "react-toastify";
 
 const InputTasks = (props) => {
   const [task, setTask] = useState("");
@@ -9,34 +11,24 @@ const InputTasks = (props) => {
     }
   }, [props.updateItem]);
 
-  const handleInsert = () => {
-    fetch(`http://localhost:5000/tasks`, {
-      method: "POST",
-      body: JSON.stringify({
-        description: task,
-        complited: false,
-      }),
-      headers: {
-        Authorization: `${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => props.setTasks((prev) => [...prev, data]));
+  const handleInsert = async () => {
+    const body = { description: task, complited: false };
+    const { data } = await insertTask(body);
+    props.setTasks((prev) => [...prev, data]);
   };
 
-  const handlePatch = (tasks, index) => {
-    fetch(`http://localhost:5000/tasks/${tasks[index]._id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        description: tasks[index].description,
-        complited: tasks[index].complited,
-      }),
-    }).then(() => console.log("Successfully Updated."));
+  const handlePatch = async (tasks, index) => {
+    const body = {
+      description: tasks[index].description,
+      complited: tasks[index].complited,
+    };
+    const id = tasks[index]._id;
+
+    try {
+      await updateTask(id, body);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
   };
 
   const handleClick = () => {
