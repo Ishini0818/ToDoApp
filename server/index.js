@@ -1,22 +1,22 @@
- const express=require("express");
+const express = require("express");
+require("dotenv").config();
 require("./db/mongoose");
 
- const bodyParser=require("body-parser");
- 
- const cors=require("cors");
- const userRouter=require("./routes/user");
- const taskRouter=require("./routes/task");
+const bodyParser = require("body-parser");
 
- const app=express();
+const cors = require("cors");
+const userRouter = require("./routes/user");
+const taskRouter = require("./routes/task");
 
- app.use(cors());
- app.use(bodyParser.json());
- app.use(userRouter);
- app.use(taskRouter);
+const app = express();
 
- const port=5000
- 
+app.use(cors());
+app.use(bodyParser.json());
+app.use(userRouter);
+app.use(taskRouter);
 
- app.listen(port,()=>{
-    console.log("Server is up and running on port"+port)
- })
+const port = 5000;
+
+app.listen(port, () => {
+  console.log("Server is up and running on port" + port);
+});
