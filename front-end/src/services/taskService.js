@@ -1,7 +1,8 @@
 import httpService from "./httpService";
+import authService from "./authService";
 
 const headers = {
-  Authorization: `${localStorage.getItem("token")}`,
+  Authorization: `${authService.getToken()}`,
 };
 
 export const getTasks = () => {

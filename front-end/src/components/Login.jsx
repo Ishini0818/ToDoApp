@@ -1,5 +1,6 @@
 import { useState } from "react";
 import userService from "../services/userService";
+import authService from "../services/authService";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -8,7 +9,7 @@ const Login = (props) => {
   const handleSubmit = async () => {
     const { data } = await userService.login({ email, password });
     props.setToken(data.token);
-    localStorage.setItem("token", data.token);
+    authService.setToken(data.token);
   };
 
   return (
