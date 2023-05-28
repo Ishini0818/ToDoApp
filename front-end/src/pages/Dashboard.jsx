@@ -1,9 +1,9 @@
-import InputTasks from "../components/InputTasks";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import InputTasks from "../components/InputTasks";
 import Tasks from "../components/Tasks";
 import { getTasks } from "../services/taskService";
 import userService from "../services/userService";
-import { toast } from "react-toastify";
 import Navbar from "../components/navbar";
 
 const Dashboard = () => {

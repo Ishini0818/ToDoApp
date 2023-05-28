@@ -1,15 +1,54 @@
 import { useState } from "react";
+import Joi from "joi-browser";
 import userService from "../services/userService";
 import authService from "../services/authService";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
 
   const handleSubmit = async () => {
-    const { data } = await userService.login({ email, password });
-    authService.setToken(data.token);
-    window.location.href = "/";
+    try {
+      const { data } = await userService.login({ email, password });
+      authService.setToken(data.token);
+      window.location.href = "/";
+    } catch (ex) {
+      if (
+        ex.response &&
+        ex.response.status >= 400 &&
+        ex.response.status < 500
+      ) {
+        const message = "Invalid email or password!";
+        setErrors({ email: message, password: message });
+      }
+    }
+  };
+
+  const schema = Joi.object({
+    email: Joi.string().email().required().label("Email"),
+    password: Joi.string().min(6).required().label("Password"),
+  });
+
+  const handleInputChange = (e) => {
+    if (e.target.type === "email") {
+      setEmail(e.target.value);
+      const { error } = schema.validate({ email: e.target.value, password });
+      const message =
+        error && error.details[0].context.key === "email"
+          ? error.details[0].message
+          : "";
+      setErrors({ email: message, password: errors.password });
+      return;
+    }
+
+    setPassword(e.target.value);
+    const { error } = schema.validate({ email, password: e.target.value });
+    const message =
+      error && error.details[0].context.key === "password"
+        ? error.details[0].message
+        : "";
+    setErrors({ email: errors.email, password: message });
   };
 
   return (
@@ -19,13 +58,16 @@ const Login = (props) => {
         <form>
           <div className="relative mb-6" data-te-input-wrapper-init>
             <input
-              type="text"
+              type="email"
               className="min-h-[auto] w-full rounded px-3 py-[0.32rem] leading-[2.15] border border-gray-500"
               id="exampleFormControlInput2"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
               placeholder="Email address"
             />
+            {errors.email && (
+              <p className="text-md italic text-red-500">* {errors.email}</p>
+            )}
           </div>
 
           <div className="relative mb-6" data-te-input-wrapper-init>
@@ -33,10 +75,13 @@ const Login = (props) => {
               type="password"
               className="min-h-[auto] w-full rounded px-3 py-[0.32rem] leading-[2.15] border border-gray-500"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
               id="exampleFormControlInput22"
               placeholder="Password"
             />
+            {errors.password && (
+              <p className="text-md italic text-red-500">* {errors.password}</p>
+            )}
           </div>
 
           <div className="mb-6 flex items-center justify-between">
@@ -60,8 +105,9 @@ const Login = (props) => {
 
           <div className="text-center lg:text-left">
             <button
+              disabled={errors.email || errors.password}
               type="button"
-              className="rounded bg-blue-500 px-5 py-2 text-white font-semibold hover:bg-blue-600 hover:shadow-lg shadow-md"
+              className="rounded bg-blue-500 px-5 py-2 text-white font-semibold hover:bg-blue-600 hover:shadow-lg shadow-md disabled:bg-blue-300"
               data-te-ripple-init
               data-te-ripple-color="light"
               onClick={handleSubmit}

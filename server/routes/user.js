@@ -31,6 +31,9 @@ router.post("/users/logout", auth, async (req, res) => {
 });
 
 router.post("/users", async (req, res) => {
+  const { email } = req.body;
+  const existingUser = User.findOne({ email });
+  if (!existingUser) return res.send(400).send("Email is already used!");
   const user = new User(req.body);
   try {
     await user.save();

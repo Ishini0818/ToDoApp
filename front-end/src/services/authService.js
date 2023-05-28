@@ -1,4 +1,5 @@
 import { tokenKey } from "../config.json";
+import jwtDecode from "jwt-decode";
 
 const getToken = () => {
   return localStorage.getItem(tokenKey);
@@ -12,4 +13,11 @@ const deleteToken = () => {
   localStorage.removeItem(tokenKey);
 };
 
-export default { getToken, setToken, deleteToken };
+const extractUserDetails = () => {
+  try {
+    const jwt = getToken();
+    return jwtDecode(jwt);
+  } catch (error) {}
+};
+
+export default { getToken, setToken, deleteToken, extractUserDetails };
